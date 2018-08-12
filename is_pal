@@ -1,0 +1,165 @@
+/*      This program reads in all values of file 'data' anddetermines if it is a palindrome. 
+        If it is not it suggests how to make it one.
+*/
+
+
+#include <iostream>
+#include <cctype>
+#include <cstdlib>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
+string process(string&);
+bool is_palindrome(string);
+int palindrome_fix_location(string);
+string palindrome_addition(string, int);
+
+int main()
+{
+        string line;
+        int location = 0;
+        bool isPal = true; //Stores value of is_pal to be used in other functions
+
+        ifstream  infile ("data");
+
+        //Reads in every line and stores it in string 'line'
+        while(getline(infile, line))
+        {
+
+                cout << "Original line: " << line << endl;
+                cout << "Processed Line: " << process(line) << endl;
+
+                //Tells user if line is a palindrome or not by calling 
+                //is_palindrome function
+                if(is_palindrome(line))
+                {
+                        cout << "Line is a palindrome! \n" << endl;
+                        isPal = true;
+                }
+                else
+                {
+                        cout << "Line is NOT a palindrome!" << endl;
+                        isPal = false;
+                }
+
+                //Calls pal_fix_location if line is not a palindrome
+                if(!isPal)
+                {
+                        location = palindrome_fix_location(line) - 1;
+
+                        cout << "Characters to insert at location " << location
+                                << " are " << line.substr(location) <<  endl; 
+                        cout << "Final line: " << palindrome_addition(line, location) << "\n" << endl;
+                }
+
+
+        }
+        infile.close();
+
+        return 0;
+}
+
+//      This function 'process' proceses the lines of the file and
+//      removes everything but letters and numbers.
+
+string process(string &s)
+{
+        string temp; 
+
+        for(unsigned int i = 0; i < s.length(); i++)
+                if(isalnum(s[i]))
+                        temp += tolower(s[i]);
+        s = temp;
+
+        return s;
+}
+
+//This function determines if the line is a palindrome
+bool is_palindrome(string s)
+{
+        /*tempa and tempb store the location in the string,
+         sLength stores the length of the string
+        */
+
+        int tempa = 0; 
+        int sLength = (s.length() - 1);
+        int tempb = sLength; 
+
+        /*Base case: if the length of the string is less than 2 
+        it is automatically a palindrome.
+        */
+        if(sLength < 2)
+                return true;
+
+        /* If length is > 2 check the first and last two letters, 
+        if they are not the same then the string is not a palindrome.
+        If they are the same, move up one postion from the left, and 
+        move down one position from the right. Then call function is_palindrome.
+        Return true, because so far string is a palindrome.
+        */
+        else
+                if(s[tempa] == s[tempb])
+                {
+                        tempa++;
+                        tempb--;
+                        sLength--;
+
+                        return true;
+
+                        return is_palindrome(s);
+                }
+                //If two values are not the same it is not a palindrome, so return false
+                else
+                        return false;
+}
+
+//This function determines where a string could be fixed
+//if it is not a palindrome
+int palindrome_fix_location(string s)
+{
+        int count = 0;
+        string diffChars;
+        bool temp = false;
+        string newstr = s;
+        string strReversed;
+
+
+        for(int i = (s.length() - 1); i >= 0; i--)
+                strReversed += s[i];
+
+        if(!temp)
+        {
+                for(unsigned int j = 0; j < s.length(); j++)
+                {
+                        count++;
+
+                        newstr += strReversed[j]; 
+
+                        if(is_palindrome(newstr))
+                                temp = true;
+                        else
+                                temp = false;
+                }
+
+        }
+        return count;
+}
+
+//Adds the missing phrase to make line a palindrome
+string palindrome_addition(string s, int a)
+{
+        string strReversed;
+        string newstr;
+
+        for(int i = (s.length() - 1); i >= 0; i--)
+                strReversed += s[i];
+
+        for(unsigned int j = a; j < s.length(); j++)
+                newstr += strReversed[j]; 
+
+        s = newstr;
+
+        return s;
+}
