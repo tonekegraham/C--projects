@@ -1,0 +1,81 @@
+/*    
+  This program uses a function to read every line of the file 'data' and capitalize the first two letters of each word.
+*/
+
+
+#include <iostream>
+#include <string>
+#include <cctype>
+#include <fstream>
+
+using namespace std;
+
+string process(string);
+
+int main()
+{
+        string line;
+
+        // Opens file 'data' and reads each line/word.
+        ifstream infile("data");
+
+        while(getline(infile, line))
+        {
+                /*
+                        Calls function 'process' and outputs the original line
+                        and the processed line.
+                */
+                cout << "Original String: " << line << endl;
+                cout << "Processed String: " << process(line) << endl;
+        }
+
+        infile.close();
+
+        return 0;
+}
+
+/*
+        This function 'process' capitalizes the first two
+        values of each word of a file, if they are letters,
+        and returns it.
+*/
+
+string process (string l)
+{
+        //loops through the string sent in from main() and stores it in i
+        for (unsigned int i=0; i <= l.length(); i++)
+        {
+                if(isblank(l[i]))
+                {
+                        //Determines if the first two values are letters;
+                        if(     (((l[i+1] >= 'A') && (l[i+1] <= 'Z')) ||
+                                ((l[i+1] >= 'a') && (l[i+1] <= 'z')))    &&
+                                (((l[i+2] >= 'A') && (l[i+2] <= 'Z')) ||
+                                ((l[i+2] >= 'a' && l[i+2] <= 'z'))))
+                        {
+
+                                /* Capitalizes the first two values and returns
+                                   it to the string.
+                                */
+                                        l[i+1] = static_cast<char>(toupper(l[i+1]));
+                                        l[i+2] = static_cast<char>(toupper(l[i+2]));
+                        }
+                }
+        }
+
+        /*      Since I'm checking for spaces the first word will be skipped.
+                This checks the first two values of the first word of each line
+                and capitalizes it.
+        */
+
+        if(     (((l[0] >= 'A') && (l[0] <= 'Z')) ||
+                ((l[0] >= 'a') && (l[0] <= 'z')))        &&
+                (((l[1] >= 'A') && (l[1] <= 'Z')) ||
+                ((l[1] >= 'a' && l[1] <= 'z'))))
+        {
+                l[0] = static_cast<char>(toupper(l[0]));
+                l[1] = static_cast<char>(toupper(l[1]));
+
+        }
+        return l;
+}
