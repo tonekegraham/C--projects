@@ -1,5 +1,4 @@
-/*                                       Toneke Graham  - CS 135 - Section 1003
-                                 A9 - This program contains two unique programs in one.
+/*                                   This program contains two unique programs in one.
                                  The first program calculates the standard deviation of
                                 all numbers in 'data'. The second conducts the
                                                 'Monte Carlo' simulation.
