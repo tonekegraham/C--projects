@@ -1,0 +1,52 @@
+/*                               This program reads each line of
+                                 a file and outputs statistics.  
+*/
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+        ifstream infile("data");
+
+        string line;
+        int line_num, digits, otherChars,lowerCase, upperCase = 0;
+
+        while (getline(infile, line))
+        {       
+                line_num++;
+
+                for(unsigned int i = 0; i<= line.length();  i++)
+                {
+                        char character = line[i];
+
+                        if ('A' <= character && character <= 'Z')
+                                upperCase ++;
+                        else if ('a' <= character  && character <= 'z')
+                                lowerCase ++;
+                        else if('0' <= character && character <= '9' )
+                                digits ++;
+                        else 
+                                otherChars ++;
+                }
+
+                cout << "Line " <<  line_num << ": " <<  line << endl;
+        }
+
+                cout << "***** FILE STATISTICS *****" << endl;
+                cout << "Digits: " << digits << endl;
+                cout << "Lower case characters: " << lowerCase <<  endl;
+                cout << "Upper case characters: " << upperCase <<  endl;
+                cout << "Other characters: " << otherChars <<  endl;
+
+
+        infile.close();
+
+        return 0;
+}
+
+
