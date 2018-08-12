@@ -1,0 +1,179 @@
+/*                             
+                This program opens a user specified file and performs an operation on the DATA in the file.
+*/
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+        ifstream infile;
+
+        cout << "Enter a file name: ";
+        string file;
+        cin >> file;
+
+        infile.open(file);
+
+        double answer;
+        double x, y;
+        string error = "false";
+        string errorMsg;
+        string operand;
+        
+
+        char DATA1, DATA2, DATA3;
+        infile >> DATA1 >> DATA2 >> DATA3;
+        
+        if (DATA2 == '+' )
+        {               
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA3);
+                operand = DATA2; 
+                
+                error = "false";
+
+                answer = x + y;
+        }
+        else if (DATA2 == '-')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA3);
+                operand = DATA2;
+                
+                answer = x - y;
+        }
+        else if (DATA2 == '*')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA3);
+                operand = DATA2;
+        
+                answer = x * y;
+        }
+        else if (DATA2 == '/')
+        {
+                if (DATA3 == '0')
+                {
+                        error = "true";
+                        errorMsg = "divide by 0 error";
+                }
+                else
+                {               
+                        x = static_cast<double>(DATA1);
+                        y = static_cast<double>(DATA3);
+                        operand = DATA3; 
+
+                        answer = x / y; 
+                }
+        }
+        if (DATA2 == 'p')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA3);
+                operand = DATA2;
+
+                answer = pow(x,y); 
+        }
+        else if (DATA2 == 'h')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA3);
+                operand = DATA2;
+
+                answer = hypot(x,y);
+        }
+        else
+        {       
+                error = "true";
+                errorMsg = "Operator is not supported.";
+        }
+
+
+
+        if (DATA3 == '+' )
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA2);
+                operand = DATA3; 
+
+                answer = x + y;
+        }
+        else if (DATA3 == '-')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA2);
+                operand = DATA3; 
+                
+                answer = x - y;
+        }
+        else if (DATA3 == '*')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA2);
+                operand = DATA3; 
+
+                answer = x * y;
+        }
+        else if (DATA3 == '/')
+        {
+                if (DATA3 == '0')
+                { error = "true";
+                        errorMsg = "divide by 0 error";
+                }
+                else
+                {
+                        x = static_cast<double>(DATA1);
+                        y = static_cast<double>(DATA2);
+                        operand = DATA3; 
+
+                        answer = x / y; 
+                }
+        }
+        else if (DATA3 == 'p')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA2);
+                operand = DATA3; 
+        
+                answer = pow(x,y); 
+        }
+        else if (DATA3 == 'h')
+        {
+                x = static_cast<double>(DATA1);
+                y = static_cast<double>(DATA2);
+                operand = DATA3; 
+
+                answer = hypot(x,y);
+        }
+        else
+        {       
+                error = "true";
+                errorMsg = "Operator is not supported.";
+        }
+
+
+        infile.close();
+
+        ofstream outfile ("grahat3");
+        
+        if (error  != "true")
+        {
+                outfile << x << " " << y << " " << operand << " = " << answer << endl; 
+
+        }
+        else
+        {
+                outfile << x << " " << y << " " << operand << " = " << errorMsg << endl; 
+        }
+
+        outfile.close();
+
+        return 0;
+}
+
