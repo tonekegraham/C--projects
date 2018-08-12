@@ -1,0 +1,107 @@
+/*                                       Toneke Graham  - CS 135 - Section 1003
+                                 A9 - This program contains two unique programs in one.
+                                 The first program calculates the standard deviation of
+                                all numbers in 'data'. The second conducts the
+                                                'Monte Carlo' simulation.
+*/
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
+
+int main()
+{
+/*      STANDARD DEVIATION
+        This part of the program calculates the standard deviation of all values in 'data'
+------------------------------------------------------------------------------------------
+*/
+
+        double pass, dontPass, point, value, n, average, stDeviation;
+        int numValues = 0, low = 1, high = 6;
+        int randNumx, randNumy;
+
+        const int TRIALS = 1000000;
+
+        ifstream infile("data");
+
+                cout << "*** Standard Deviation Calculation ***" << endl;
+
+                //      This section reads each value in the file and outputs it
+
+                while(infile >> value)
+                {
+                        numValues++;
+                        cout << "Value #" << numValues << ": "<< value << endl;
+
+                        n += value;
+                }
+                
+                average = n/numValues;
+
+                // resets n so it can be used again
+                n = 0;
+
+                //This clears the stream so the file can be re-read
+                infile.clear();
+                infile.seekg(0);
+
+                /*
+                        Takes in values from 'data' again to calculate average and
+                        standard deviation.
+                */
+
+                while(infile >> value)
+                {
+                        n += pow((value - average), 2);
+                }
+
+                stDeviation = sqrt(n/(numValues - 1));
+                cout << "Sample Standard Deviation: " << stDeviation << endl;
+
+        infile.close();
+
+/*      MONTE CARLO SIMULATION
+        This program  calculates the probability of a roll of dice after 1,000,000 trials.
+------------------------------------------------------------------------------------------------
+*/
+        srand(time(NULL));
+
+        cout << "*** Craps Simulation ***" << endl;
+
+        for (int i = 0; i <= TRIALS; i++)
+        {
+                randNumx = rand() % (high - low + 1) + low; //Gets a random number
+                randNumy = rand() % (high - low + 1) + low;
+
+                /*
+                        If the total of the two is 2,3,12 player passes.
+                        If it is equal to 7 or 11, player doesnt pass. Any other sum
+                        player gets a point.
+                */
+
+                if      (randNumx + randNumy == 2 ||
+                        randNumx + randNumy == 3 ||
+                        randNumx + randNumy == 12)
+                                dontPass++;
+                else if(randNumx + randNumy == 7 || randNumx + randNumy == 11)
+                        pass++;
+                else
+                        point++;
+        }
+
+        cout << TRIALS << " trials conducted." << endl;
+        cout << "Pass: " << pass << "/" << TRIALS <<
+                " " << ((pass/TRIALS) * 100) << "%" << endl;
+        cout << "Don't Pass: " << dontPass << "/" << TRIALS <<
+                " " << ((dontPass/TRIALS) * 100) << "%" << endl;
+        cout << "Point Established: " << point << "/" << TRIALS <<
+                " " << ((point/TRIALS) * 100) << "%" << endl;
+        return 0;
+}
+
